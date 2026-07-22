@@ -21,10 +21,11 @@ exactly how each rubric line item is satisfied and where the evidence lives.
 
 [`notebooks/capstone_demo.ipynb`](notebooks/capstone_demo.ipynb) — open in
 Google Colab and run all cells. It runs the entire project end to end and
-prints a short, plain-language result after every stage (e.g. "✅ 5 قبلت،
-❌ 5 رُفضت — والأسباب") instead of raw Kafka/Spark/Airflow/Great Expectations
-framework logs. Ends by running the same pipeline a second time through the
-real Airflow DAG, so you see both the manual walkthrough and the genuine
+prints a short, plain-language result after every stage (e.g. "✅ 5
+accepted", "❌ 5 rejected — and why") instead of raw Kafka/Spark/Airflow/
+Great Expectations framework logs. Ends by running the same pipeline a
+second time through the real Airflow DAG, so you see both the manual
+walkthrough and the genuine
 orchestrated run.
 
 ## Architecture
