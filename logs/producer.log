@@ -1,0 +1,70 @@
+2026-07-22 19:14:34 | INFO | Publishing 10 document events to 'university.documents.raw'
+2026-07-22 19:14:34 | INFO |   -> sent attendance_policy.pdf (type='pdf', size=2354, category='policy')
+2026-07-22 19:14:34 | INFO |   -> sent corrupted_upload.exe (type='exe', size=36, category='general')
+2026-07-22 19:14:34 | INFO |   -> sent course_withdrawal_policy.txt (type='txt', size=1502, category='policy')
+2026-07-22 19:14:34 | INFO |   -> sent cs_program_requirements.docx (type='docx', size=37357, category='course_catalog')
+2026-07-22 19:14:34 | INFO |   -> sent empty_handbook.txt (type='txt', size=0, category='general')
+2026-07-22 19:14:34 | INFO |   -> sent graduation_requirements.txt (type='txt', size=1956, category='policy')
+2026-07-22 19:14:34 | INFO |   -> sent scholarships_financial_aid.txt (type='txt', size=1864, category='scholarship')
+2026-07-22 19:14:34 | INFO |   -> sent mislabeled_policy.txt (type='pdf', size=1234, category='policy')
+2026-07-22 19:14:34 | INFO |   -> sent anonymous_upload.txt (type='txt', size=500, category='general')
+2026-07-22 19:14:34 | INFO |   -> sent ghost_document.txt (type='txt', size=42, category='general')
+2026-07-22 19:14:34 | SUCCESS | Done. 10 events published to Kafka topic 'university.documents.raw'.
+2026-07-22 19:14:34 | SUCCESS | [LINEAGE] COMPLETE  produce_documents (run_id=019f8a9b-8006-74f3-a41f-41b604838f1a)
+2026-07-22 19:14:34 | INFO | [LINEAGE] START     validate_and_consume (run_id=019f8a9b-812d-7f50-9f6f-88ee68fb2786)
+2026-07-22 19:14:34 | INFO | Consuming 'university.documents.raw' as group 'document-ingestion-validator'...
+2026-07-22 19:14:38 | ERROR | REJECTED  'corrupted_upload.exe' (id=8d228d13-b177-4b50-b509-9d69b3935642) -> university.documents.dlq | reason: Input should be 'pdf', 'docx' or 'txt'
+2026-07-22 19:14:38 | SUCCESS | ACCEPTED  'course_withdrawal_policy.txt' (id=df0cb5aa-41e2-4d64-a706-8cdbfc9982cc, type=txt, category=policy) -> university.documents.validated
+2026-07-22 19:14:38 | ERROR | REJECTED  'empty_handbook.txt' (id=55face6d-f1ac-44ea-b7fc-35964b866bc6) -> university.documents.dlq | reason: Value error, file_size_bytes must be > 0 (got 0 — empty upload)
+2026-07-22 19:14:38 | SUCCESS | ACCEPTED  'graduation_requirements.txt' (id=57688eb2-48a3-4ec0-ae50-6d9c0fa5cfca, type=txt, category=policy) -> university.documents.validated
+2026-07-22 19:14:38 | ERROR | REJECTED  'mislabeled_policy.txt' (id=7dc41c30-f419-47fd-bd2b-ae5f7a303af3) -> university.documents.dlq | reason: Value error, declared file_type 'pdf' does not match the actual extension '.txt' (expected 'txt')
+2026-07-22 19:14:38 | SUCCESS | ACCEPTED  'attendance_policy.pdf' (id=94583266-40f8-4ba2-a5e7-a09afde67016, type=pdf, category=policy) -> university.documents.validated
+2026-07-22 19:14:38 | SUCCESS | ACCEPTED  'scholarships_financial_aid.txt' (id=b080386c-7eeb-4516-b252-95f40f5d28f5, type=txt, category=scholarship) -> university.documents.validated
+2026-07-22 19:14:38 | ERROR | REJECTED  'anonymous_upload.txt' (id=1062f7c3-9c22-4eac-ad6d-ffb20b1c4787) -> university.documents.dlq | reason: Field required
+2026-07-22 19:14:38 | SUCCESS | ACCEPTED  'cs_program_requirements.docx' (id=4ae163a2-785f-4afd-9130-d9354ddf3e8e, type=docx, category=course_catalog) -> university.documents.validated
+2026-07-22 19:14:38 | ERROR | REJECTED  'ghost_document.txt' (id=f3f0f6c0-e9d0-4ebc-8d88-e2a0424e7dda) -> university.documents.dlq | reason: Value error, file_path 'C:\Users\lujai\OneDrive\Desktop\ai-university-knowledge-hub\incoming_documents\does_not_exist_on_disk.txt' does not exist on disk
+2026-07-22 19:14:48 | INFO | ============================================================
+2026-07-22 19:14:48 | INFO | INGESTION VALIDATION SUMMARY
+2026-07-22 19:14:48 | INFO |   Total messages consumed : 10
+2026-07-22 19:14:48 | INFO |   Accepted (Bronze-bound) : 5
+2026-07-22 19:14:48 | INFO |   Rejected (DLQ+quarantine): 5
+2026-07-22 19:14:48 | INFO |   Rejection reason breakdown:
+2026-07-22 19:14:48 | INFO |     [1x] Input should be 'pdf', 'docx' or 'txt'
+2026-07-22 19:14:48 | INFO |     [1x] Value error, file_size_bytes must be > 0
+2026-07-22 19:14:48 | INFO |     [1x] Value error, declared file_type 'pdf' does not match the actual extension '.txt'
+2026-07-22 19:14:48 | INFO |     [1x] Field required
+2026-07-22 19:14:48 | INFO |     [1x] Value error, file_path 'C:\Users\lujai\OneDrive\Desktop\ai-university-knowledge-hub\incoming_documents\does_not_exist_on_disk.txt' does not exist on disk
+2026-07-22 19:14:48 | INFO | ============================================================
+2026-07-22 19:14:48 | SUCCESS | [LINEAGE] COMPLETE  validate_and_consume (run_id=019f8a9b-812d-7f50-9f6f-88ee68fb2786)
+2026-07-22 19:14:48 | INFO | [LINEAGE] START     check_ingestion_quality (run_id=019f8a9b-b59d-7ede-a148-862066288eed)
+2026-07-22 19:14:48 | SUCCESS | Ingestion gate passed: 5 document(s) accepted
+2026-07-22 19:14:48 | SUCCESS | [LINEAGE] COMPLETE  check_ingestion_quality (run_id=019f8a9b-b59d-7ede-a148-862066288eed)
+2026-07-22 19:14:48 | INFO | [LINEAGE] START     bronze_load (run_id=019f8a9b-b5a5-7508-b572-7969381a66be)
+2026-07-22 19:14:48 | INFO | Loaded 5 validated events from manifest
+2026-07-22 19:14:49 | INFO | Extracted raw text for 5/5 documents
+2026-07-22 19:16:52 | SUCCESS | Bronze table written: 5 rows -> C:\Users\lujai\OneDrive\Desktop\ai-university-knowledge-hub\lakehouse\bronze\documents_bronze
+2026-07-22 19:16:57 | SUCCESS | [LINEAGE] COMPLETE  bronze_load (run_id=019f8a9b-b5a5-7508-b572-7969381a66be)
+2026-07-22 19:16:57 | INFO | [LINEAGE] START     silver_transform (run_id=019f8a9d-af75-7049-875f-ed0f8d7612ff)
+2026-07-22 19:17:07 | INFO | Read 5 rows from Bronze
+2026-07-22 19:18:22 | SUCCESS | [initial load] Silver table created via initial write: 5 rows
+2026-07-22 19:19:06 | SUCCESS | [revision upsert] MERGE complete on business key file_name (update_existing=True) — 5 rows before, 5 rows after (1 incoming)
+2026-07-22 19:19:06 | INFO | graduation_requirements.txt document_id=a2bcf2b3-85c4-4e2f-b5da-c17034348bbc (originally 57688eb2-48a3-4ec0-ae50-6d9c0fa5cfca) — confirms UPDATE, not duplicate insert
+2026-07-22 19:19:06 | SUCCESS | Schema enforcement CONFIRMED — Delta rejected the write with an undeclared column. Error: [_LEGACY_ERROR_TEMP_DELTA_0007] A schema mismatch detected when writing to the Delta table (Table ID: 814bfa8c-b4bb-47f1-a4c4-7e5361c36d37).
+2026-07-22 19:19:06 | INFO | Final Silver row count: 5 (must still be 5, not 6)
+2026-07-22 19:19:09 | SUCCESS | [LINEAGE] COMPLETE  silver_transform (run_id=019f8a9d-af75-7049-875f-ed0f8d7612ff)
+2026-07-22 19:19:09 | INFO | [LINEAGE] START     quality_checkpoint (run_id=019f8a9f-b242-7665-bc6c-8881e2bc995f)
+2026-07-22 19:19:10 | INFO | Great Expectations checkpoint against Silver (5 rows):
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=document_id)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=file_name)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_be_unique (column=file_name)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_match_regex (column=file_type)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_be_between (column=word_count)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_be_in_set (column=is_valid)
+2026-07-22 19:19:10 | SUCCESS | Quality gate PASSED — safe to proceed to Gold
+2026-07-22 19:19:10 | SUCCESS | [LINEAGE] COMPLETE  quality_checkpoint (run_id=019f8a9f-b242-7665-bc6c-8881e2bc995f)
+2026-07-22 19:19:10 | INFO | [LINEAGE] START     gold_aggregate (run_id=019f8a9f-b496-7302-8af8-d30e540fc819)
+2026-07-22 19:19:16 | INFO | Read 5 valid rows from Silver
+2026-07-22 19:19:23 | SUCCESS | Gold table written + OPTIMIZEd: 3 category rows (aggregated from 5 Silver document rows) -> C:\Users\lujai\OneDrive\Desktop\ai-university-knowledge-hub\lakehouse\gold\category_knowledge_stats
+2026-07-22 19:19:23 | INFO | Confirms Gold is a genuine aggregate, not a copy of Silver: 5 document rows -> 3 category rows, different schema (rollup columns vs per-document columns)
+2026-07-22 19:19:25 | SUCCESS | [LINEAGE] COMPLETE  gold_aggregate (run_id=019f8a9f-b496-7302-8af8-d30e540fc819)
+2026-07-22 19:19:25 | SUCCESS | Full pipeline completed: ingestion -> Bronze -> Silver -> quality gate -> Gold
