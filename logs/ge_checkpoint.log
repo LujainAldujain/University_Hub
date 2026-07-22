@@ -1,0 +1,21 @@
+2026-07-22 19:22:12 | INFO | Great Expectations checkpoint against Silver (5 rows):
+2026-07-22 19:22:12 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=document_id)
+2026-07-22 19:22:12 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=file_name)
+2026-07-22 19:22:12 | SUCCESS |   [PASSED] expect_column_values_to_be_unique (column=file_name)
+2026-07-22 19:22:12 | SUCCESS |   [PASSED] expect_column_values_to_match_regex (column=file_type)
+2026-07-22 19:22:12 | SUCCESS |   [PASSED] expect_column_values_to_be_between (column=word_count)
+2026-07-22 19:22:12 | SUCCESS |   [PASSED] expect_column_values_to_be_in_set (column=is_valid)
+2026-07-22 19:22:12 | SUCCESS | Quality gate PASSED — safe to proceed to Gold
+2026-07-22 19:23:39 | INFO | Great Expectations checkpoint against Silver (6 rows):
+2026-07-22 19:23:39 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=document_id)
+2026-07-22 19:23:39 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=file_name)
+2026-07-22 19:23:39 | ERROR |   [FAILED] expect_column_values_to_be_unique (column=file_name)
+2026-07-22 19:23:39 | SUCCESS |   [PASSED] expect_column_values_to_match_regex (column=file_type)
+2026-07-22 19:23:39 | SUCCESS |   [PASSED] expect_column_values_to_be_between (column=word_count)
+2026-07-22 19:23:39 | SUCCESS |   [PASSED] expect_column_values_to_be_in_set (column=is_valid)
+2026-07-22 19:23:39 | ERROR | Quality gate FAILED — pipeline must halt before Gold
+2026-07-22 19:23:39 | ERROR | [LINEAGE] FAIL      quality_checkpoint (run_id=019f8aa3-d154-75b9-bc5a-be54be811096)
+2026-07-22 19:23:39 | ERROR | PIPELINE HALTED: Great Expectations quality gate FAILED on Silver — halting before Gold.
+2026-07-22 19:23:39 | INFO | gold_aggregate was called: False (must be False)
+2026-07-22 19:23:39 | INFO | Cleaned up the injected row — Silver restored to its correct state
+2026-07-22 19:23:39 | SUCCESS | Failure-path demo complete: gate blocked Gold, then Silver was restored
