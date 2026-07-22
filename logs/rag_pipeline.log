@@ -1,0 +1,56 @@
+2026-07-22 18:59:25 | INFO | RAG pipeline ready: 24 chunks indexed
+2026-07-22 19:00:11 | INFO | ======================================================================
+2026-07-22 19:00:11 | INFO | Q: What are the graduation requirements?
+2026-07-22 19:00:11 | INFO | A: Based on the provided university graduation requirements, students must complete a minimum of 132 total credit hours. Additionally, the final 30 credit hours of a student's program must be completed at this university, and a senior capstone project or comprehensive exam is required in the final year for most majors. [Source 1]
+2026-07-22 19:00:11 | INFO | Citations: ['graduation_requirements.txt']
+2026-07-22 19:00:11 | INFO | (hybrid candidates: 6, chunks used: 3)
+2026-07-22 19:01:50 | INFO | ======================================================================
+2026-07-22 19:01:50 | INFO | Q: What courses are required for Computer Science?
+2026-07-22 19:01:50 | INFO | A: According to the provided document, the required courses for the Bachelor of Science in Computer Science include:
+
+1. **Introduction to Programming** (CS 101) - 3 credit hours
+2. **Data Structures and Algorithms** (CS 102) - 3 credit hours
+3. **Discrete Mathematics** (CS 201) - 3 credit hours
+4. **Computer Organization and Architecture** (CS 210) - 3 credit hours
+5. **Object-Oriented Software Design** (CS 220) - 3 credit hours
+6. **Database Systems** (CS 301) - 3 credit hours
+7. **Operating Systems** (CS 305) - 3 credit hours
+8. **Computer Networks** (CS 310) - 3 credit hours
+9. **Software Engineering** (CS 320) - 3 credit hours
+2026-07-22 19:01:50 | INFO | Citations: ['cs_program_requirements.docx', 'graduation_requirements.txt']
+2026-07-22 19:01:50 | INFO | (hybrid candidates: 6, chunks used: 3)
+2026-07-22 19:02:10 | INFO | ======================================================================
+2026-07-22 19:02:10 | INFO | Q: How many credit hours are needed to graduate?
+2026-07-22 19:02:10 | INFO | A: According to the university's graduation requirements, a student must complete a minimum of 132 total credit hours to graduate. [Source 1]
+2026-07-22 19:02:10 | INFO | Citations: ['graduation_requirements.txt']
+2026-07-22 19:02:10 | INFO | (hybrid candidates: 6, chunks used: 3)
+2026-07-22 19:02:38 | INFO | ======================================================================
+2026-07-22 19:02:38 | INFO | Q: What is the deadline for course withdrawal?
+2026-07-22 19:02:38 | INFO | A: The deadline for course withdrawal is the end of WEEK 10 of a standard 15-week semester or the end of WEEK 5 for 8-week accelerated terms. This information can be found in Source 1: course_withdrawal_policy.txt.
+2026-07-22 19:02:38 | INFO | Citations: ['course_withdrawal_policy.txt']
+2026-07-22 19:02:38 | INFO | (hybrid candidates: 6, chunks used: 3)
+2026-07-22 19:03:29 | INFO | ======================================================================
+2026-07-22 19:03:29 | INFO | Q: What is the attendance policy?
+2026-07-22 19:03:29 | INFO | A: The University Attendance Policy outlines several aspects including general attendance requirements, instructor responsibilities, and specific guidelines for excused absences. According to Source 1, students are required to attend all scheduled class sessions. If they miss more than 20% of these sessions (whether excused or unexcused), they may face administrative withdrawal with a failing grade ('WF'). Additionally, instructors are responsible for recording attendance and reporting absent students within the first two weeks of the semester to the Registrar for potential administrative drops if necessary. [Source 1]
+2026-07-22 19:03:29 | INFO | Citations: ['attendance_policy.pdf']
+2026-07-22 19:03:29 | INFO | (hybrid candidates: 6, chunks used: 3)
+2026-07-22 19:04:56 | INFO | ======================================================================
+2026-07-22 19:04:56 | INFO | Q: What scholarships are available?
+2026-07-22 19:04:56 | INFO | A: Based on the available university documents, there are several types of scholarships that are offered:
+
+1. **Merit-Based Scholarships**: 
+   - **Presidential Scholarship**: Full tuition for entering freshmen with a cumulative high school GPA of 3.9+ and a top-decile admissions test score.
+   - **Dean's Scholarship**: 50% tuition for entering freshmen with a GPA of 3.6+.
+
+2. **Departmental Scholarships**:
+   - Individual academic departments such as Computer Science, Engineering, and Business offer competitive scholarships to declared majors in these fields starting from their second year onwards. Applications are typically submitted during the Spring semester through the respective department office.
+
+3. **Athletic and Arts Scholarships**:
+   - Awarded by the Athletics Department and the College of Fine Arts respectively, these scholarships are based on tryouts, portfolio review, or audition. They can be combined with up to one merit-based scholarship, but the total aid cannot exceed 10
+2026-07-22 19:04:56 | INFO | Citations: ['scholarships_financial_aid.txt']
+2026-07-22 19:04:56 | INFO | (hybrid candidates: 6, chunks used: 3)
+2026-07-22 19:05:08 | INFO | ======================================================================
+2026-07-22 19:05:08 | INFO | Q: What is the university's parking permit policy?
+2026-07-22 19:05:08 | INFO | A: I don't know based on the available university documents.
+2026-07-22 19:05:08 | INFO | Citations: []
+2026-07-22 19:05:08 | INFO | (hybrid candidates: 6, chunks used: 3)
