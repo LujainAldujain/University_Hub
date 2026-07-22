@@ -6,9 +6,16 @@ course catalogs, attendance policy, withdrawal deadlines, scholarships, ...)
 and get answers grounded strictly in retrieved documents, with citations —
 never hallucinated.
 
-Built for the **Modern Data Engineering for AI Systems** capstone (SDAIA
-Academy). See `docs/CAPSTONE_RUBRIC_MAPPING.md` for how each rubric line item
-is satisfied.
+## Training program attribution
+
+Built as the capstone project for **Modern Data Engineering for AI
+Systems**, **SDAIA Academy** (5-day program, delivered via Learning
+Space; cohort/session dates: *fill in your cohort's dates here*).
+
+Supporting the Saudi tech community on GitHub: [SDAIA Academy](https://github.com/SDAIAAcademy).
+
+See [docs/CAPSTONE_RUBRIC_MAPPING.md](docs/CAPSTONE_RUBRIC_MAPPING.md) for
+exactly how each rubric line item is satisfied and where the evidence lives.
 
 ## Architecture
 
