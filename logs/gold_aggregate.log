@@ -1,0 +1,5 @@
+2026-07-22 19:19:16 | INFO | Read 5 valid rows from Silver
+2026-07-22 19:19:23 | SUCCESS | Gold table written + OPTIMIZEd: 3 category rows (aggregated from 5 Silver document rows) -> C:\Users\lujai\OneDrive\Desktop\ai-university-knowledge-hub\lakehouse\gold\category_knowledge_stats
+2026-07-22 19:19:23 | INFO | Confirms Gold is a genuine aggregate, not a copy of Silver: 5 document rows -> 3 category rows, different schema (rollup columns vs per-document columns)
+2026-07-22 19:19:25 | SUCCESS | [LINEAGE] COMPLETE  gold_aggregate (run_id=019f8a9f-b496-7302-8af8-d30e540fc819)
+2026-07-22 19:19:25 | SUCCESS | Full pipeline completed: ingestion -> Bronze -> Silver -> quality gate -> Gold

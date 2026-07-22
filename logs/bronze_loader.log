@@ -1,0 +1,28 @@
+2026-07-22 19:14:48 | INFO | Loaded 5 validated events from manifest
+2026-07-22 19:14:49 | INFO | Extracted raw text for 5/5 documents
+2026-07-22 19:16:52 | SUCCESS | Bronze table written: 5 rows -> C:\Users\lujai\OneDrive\Desktop\ai-university-knowledge-hub\lakehouse\bronze\documents_bronze
+2026-07-22 19:16:57 | SUCCESS | [LINEAGE] COMPLETE  bronze_load (run_id=019f8a9b-b5a5-7508-b572-7969381a66be)
+2026-07-22 19:16:57 | INFO | [LINEAGE] START     silver_transform (run_id=019f8a9d-af75-7049-875f-ed0f8d7612ff)
+2026-07-22 19:17:07 | INFO | Read 5 rows from Bronze
+2026-07-22 19:18:22 | SUCCESS | [initial load] Silver table created via initial write: 5 rows
+2026-07-22 19:19:06 | SUCCESS | [revision upsert] MERGE complete on business key file_name (update_existing=True) — 5 rows before, 5 rows after (1 incoming)
+2026-07-22 19:19:06 | INFO | graduation_requirements.txt document_id=a2bcf2b3-85c4-4e2f-b5da-c17034348bbc (originally 57688eb2-48a3-4ec0-ae50-6d9c0fa5cfca) — confirms UPDATE, not duplicate insert
+2026-07-22 19:19:06 | SUCCESS | Schema enforcement CONFIRMED — Delta rejected the write with an undeclared column. Error: [_LEGACY_ERROR_TEMP_DELTA_0007] A schema mismatch detected when writing to the Delta table (Table ID: 814bfa8c-b4bb-47f1-a4c4-7e5361c36d37).
+2026-07-22 19:19:06 | INFO | Final Silver row count: 5 (must still be 5, not 6)
+2026-07-22 19:19:09 | SUCCESS | [LINEAGE] COMPLETE  silver_transform (run_id=019f8a9d-af75-7049-875f-ed0f8d7612ff)
+2026-07-22 19:19:09 | INFO | [LINEAGE] START     quality_checkpoint (run_id=019f8a9f-b242-7665-bc6c-8881e2bc995f)
+2026-07-22 19:19:10 | INFO | Great Expectations checkpoint against Silver (5 rows):
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=document_id)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_not_be_null (column=file_name)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_be_unique (column=file_name)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_match_regex (column=file_type)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_be_between (column=word_count)
+2026-07-22 19:19:10 | SUCCESS |   [PASSED] expect_column_values_to_be_in_set (column=is_valid)
+2026-07-22 19:19:10 | SUCCESS | Quality gate PASSED — safe to proceed to Gold
+2026-07-22 19:19:10 | SUCCESS | [LINEAGE] COMPLETE  quality_checkpoint (run_id=019f8a9f-b242-7665-bc6c-8881e2bc995f)
+2026-07-22 19:19:10 | INFO | [LINEAGE] START     gold_aggregate (run_id=019f8a9f-b496-7302-8af8-d30e540fc819)
+2026-07-22 19:19:16 | INFO | Read 5 valid rows from Silver
+2026-07-22 19:19:23 | SUCCESS | Gold table written + OPTIMIZEd: 3 category rows (aggregated from 5 Silver document rows) -> C:\Users\lujai\OneDrive\Desktop\ai-university-knowledge-hub\lakehouse\gold\category_knowledge_stats
+2026-07-22 19:19:23 | INFO | Confirms Gold is a genuine aggregate, not a copy of Silver: 5 document rows -> 3 category rows, different schema (rollup columns vs per-document columns)
+2026-07-22 19:19:25 | SUCCESS | [LINEAGE] COMPLETE  gold_aggregate (run_id=019f8a9f-b496-7302-8af8-d30e540fc819)
+2026-07-22 19:19:25 | SUCCESS | Full pipeline completed: ingestion -> Bronze -> Silver -> quality gate -> Gold
