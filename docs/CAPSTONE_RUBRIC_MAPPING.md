@@ -50,7 +50,7 @@ rubric to the exact file(s) that satisfy it and where its evidence lives.
 | Real Airflow DAG, correct dependencies | [`airflow/dags/university_pipeline_dag.py`](../airflow/dags/university_pipeline_dag.py) |
 | Failed quality gate halts the pipeline | `check_ingestion_quality` and `quality_checkpoint` tasks — every downstream task depends on its gate via TaskFlow argument-passing, `all_success` trigger rule |
 
-**Status**: code-complete and verified locally in an equivalent non-Airflow runner ([`scripts/run_pipeline_with_lineage.py`](../scripts/run_pipeline_with_lineage.py)). Confirmed (not assumed) the DAG cannot execute on native Windows — `os.register_at_fork` is missing (POSIX-only) and `airflow.sdk` has an independently broken import chain here. Execution evidence (`airflow dags test`) requires Colab/WSL2/Docker — see [README.md "Stage 4 — Orchestration"](../README.md) for exact commands, including how to reproduce the gate-failure halt.
+**Evidence**: [`logs/airflow_dag_test.log`](../logs/airflow_dag_test.log) — executed with `airflow dags test university_knowledge_hub_pipeline 2026-01-01` in Google Colab (confirmed: `os.register_at_fork` is missing on native Windows, POSIX-only, so this genuinely requires a Linux runtime). Airflow's own log confirms `DagRun Finished: ... state=success`; all 7 tasks ran in the correct order with the same real results as the local runs (5/10 documents accepted, MERGE + schema-enforcement rejection on Silver, all 6 GX expectations passed, 5→3 row Gold rollup).
 
 ### Quality Gate + Lineage — 15 pts
 

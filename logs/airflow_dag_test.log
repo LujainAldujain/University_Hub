@@ -1,0 +1,72 @@
+2026-07-22 17:36:58.547 | INFO     | lineage.lineage_emitter:emit_lineage:53 - [LINEAGE] START     produce_documents (run_id=019f8ae6-f0b2-719a-a3d6-25f225529d43)
+2026-07-22 17:36:58.581 | INFO     | producer.document_producer:main:129 - Publishing 10 document events to 'university.documents.raw'
+2026-07-22 17:36:58.701 | INFO     | producer.document_producer:main:132 -   -> sent attendance_policy.pdf (type='pdf', size=2354, category='policy')
+2026-07-22 17:36:58.706 | INFO     | producer.document_producer:main:132 -   -> sent corrupted_upload.exe (type='exe', size=36, category='general')
+2026-07-22 17:36:58.707 | INFO     | producer.document_producer:main:132 -   -> sent course_withdrawal_policy.txt (type='txt', size=1502, category='policy')
+2026-07-22 17:36:58.708 | INFO     | producer.document_producer:main:132 -   -> sent cs_program_requirements.docx (type='docx', size=37357, category='course_catalog')
+2026-07-22 17:36:58.708 | INFO     | producer.document_producer:main:132 -   -> sent empty_handbook.txt (type='txt', size=0, category='general')
+2026-07-22 17:36:58.710 | INFO     | producer.document_producer:main:132 -   -> sent graduation_requirements.txt (type='txt', size=1956, category='policy')
+2026-07-22 17:36:58.710 | INFO     | producer.document_producer:main:132 -   -> sent scholarships_financial_aid.txt (type='txt', size=1864, category='scholarship')
+2026-07-22 17:36:58.710 | INFO     | producer.document_producer:main:132 -   -> sent mislabeled_policy.txt (type='pdf', size=1234, category='policy')
+2026-07-22 17:36:58.711 | INFO     | producer.document_producer:main:132 -   -> sent anonymous_upload.txt (type='txt', size=500, category='general')
+2026-07-22 17:36:58.713 | INFO     | producer.document_producer:main:132 -   -> sent ghost_document.txt (type='txt', size=42, category='general')
+2026-07-22 17:36:58.777 | SUCCESS  | producer.document_producer:main:140 - Done. 10 events published to Kafka topic 'university.documents.raw'.
+2026-07-22 17:36:58.779 | SUCCESS  | lineage.lineage_emitter:emit_lineage:63 - [LINEAGE] COMPLETE  produce_documents (run_id=019f8ae6-f0b2-719a-a3d6-25f225529d43)
+2026-07-22 17:36:58.969 | INFO     | lineage.lineage_emitter:emit_lineage:53 - [LINEAGE] START     validate_and_consume (run_id=019f8ae6-f258-7d2e-a524-5bbcfe9fb6d3)
+2026-07-22 17:36:59.001 | INFO     | consumer.document_consumer:main:97 - Consuming 'university.documents.raw' as group 'document-ingestion-validator'...
+2026-07-22 17:37:03.511 | SUCCESS  | consumer.document_consumer:route_valid:45 - ACCEPTED  'attendance_policy.pdf' (id=5251bb18-7d40-4382-a2bf-354e102f8b53, type=pdf, category=policy) -> university.documents.validated
+2026-07-22 17:37:03.613 | ERROR    | consumer.document_consumer:route_invalid:67 - REJECTED  'corrupted_upload.exe' (id=4c7437b0-119a-4f71-b189-512964a8f674) -> university.documents.dlq | reason: Input should be 'pdf', 'docx' or 'txt'
+2026-07-22 17:37:03.614 | SUCCESS  | consumer.document_consumer:route_valid:45 - ACCEPTED  'course_withdrawal_policy.txt' (id=7999650b-045e-4811-96d0-a60db344990a, type=txt, category=policy) -> university.documents.validated
+2026-07-22 17:37:03.615 | SUCCESS  | consumer.document_consumer:route_valid:45 - ACCEPTED  'cs_program_requirements.docx' (id=90335d1f-529d-4fb8-82f0-0ffc65532d34, type=docx, category=course_catalog) -> university.documents.validated
+2026-07-22 17:37:03.616 | SUCCESS  | consumer.document_consumer:route_valid:45 - ACCEPTED  'scholarships_financial_aid.txt' (id=ae565feb-6251-45b6-bedd-9b85f330fedf, type=txt, category=scholarship) -> university.documents.validated
+2026-07-22 17:37:03.617 | ERROR    | consumer.document_consumer:route_invalid:67 - REJECTED  'mislabeled_policy.txt' (id=18bd9df9-fa85-4ffd-8aa5-fea4eed40fe5) -> university.documents.dlq | reason: Value error, declared file_type 'pdf' does not match the actual extension '.txt' (expected 'txt')
+2026-07-22 17:37:03.619 | ERROR    | consumer.document_consumer:route_invalid:67 - REJECTED  'anonymous_upload.txt' (id=b85a46e3-bbb1-4d0e-92c2-9fc132f41b79) -> university.documents.dlq | reason: Field required
+2026-07-22 17:37:03.619 | ERROR    | consumer.document_consumer:route_invalid:67 - REJECTED  'ghost_document.txt' (id=00a47043-2f21-4d63-8bc7-886b9573322c) -> university.documents.dlq | reason: Value error, file_path '/content/ai-university-knowledge-hub/incoming_documents/does_not_exist_on_disk.txt' does not exist on disk
+2026-07-22 17:37:03.623 | ERROR    | consumer.document_consumer:route_invalid:67 - REJECTED  'empty_handbook.txt' (id=9ec6d83e-73e3-46c7-b9b8-4a6f1c512522) -> university.documents.dlq | reason: Value error, file_size_bytes must be > 0 (got 0 — empty upload)
+2026-07-22 17:37:03.623 | SUCCESS  | consumer.document_consumer:route_valid:45 - ACCEPTED  'graduation_requirements.txt' (id=8ad606b9-9016-4a20-bc84-46b41a703644, type=txt, category=policy) -> university.documents.validated
+2026-07-22 17:37:13.645 | INFO     | consumer.document_consumer:main:115 - ============================================================
+2026-07-22 17:37:13.645 | INFO     | consumer.document_consumer:main:116 - INGESTION VALIDATION SUMMARY
+2026-07-22 17:37:13.645 | INFO     | consumer.document_consumer:main:117 -   Total messages consumed : 10
+2026-07-22 17:37:13.645 | INFO     | consumer.document_consumer:main:118 -   Accepted (Bronze-bound) : 5
+2026-07-22 17:37:13.645 | INFO     | consumer.document_consumer:main:119 -   Rejected (DLQ+quarantine): 5
+2026-07-22 17:37:13.645 | INFO     | consumer.document_consumer:main:121 -   Rejection reason breakdown:
+2026-07-22 17:37:13.646 | INFO     | consumer.document_consumer:main:123 -     [1x] Input should be 'pdf', 'docx' or 'txt'
+2026-07-22 17:37:13.646 | INFO     | consumer.document_consumer:main:123 -     [1x] Value error, declared file_type 'pdf' does not match the actual extension '.txt'
+2026-07-22 17:37:13.646 | INFO     | consumer.document_consumer:main:123 -     [1x] Field required
+2026-07-22 17:37:13.646 | INFO     | consumer.document_consumer:main:123 -     [1x] Value error, file_path '/content/ai-university-knowledge-hub/incoming_documents/does_not_exist_on_disk.txt' does not exist on disk
+2026-07-22 17:37:13.646 | INFO     | consumer.document_consumer:main:123 -     [1x] Value error, file_size_bytes must be > 0
+2026-07-22 17:37:13.646 | INFO     | consumer.document_consumer:main:124 - ============================================================
+2026-07-22 17:37:13.647 | SUCCESS  | lineage.lineage_emitter:emit_lineage:63 - [LINEAGE] COMPLETE  validate_and_consume (run_id=019f8ae6-f258-7d2e-a524-5bbcfe9fb6d3)
+2026-07-22 17:37:13.840 | INFO     | lineage.lineage_emitter:emit_lineage:53 - [LINEAGE] START     check_ingestion_quality (run_id=019f8ae7-2c6f-74aa-9817-0fbc443c86f8)
+2026-07-22 17:37:13.840 | SUCCESS  | lineage.lineage_emitter:emit_lineage:63 - [LINEAGE] COMPLETE  check_ingestion_quality (run_id=019f8ae7-2c6f-74aa-9817-0fbc443c86f8)
+2026-07-22 17:37:14.277 | INFO     | lineage.lineage_emitter:emit_lineage:53 - [LINEAGE] START     bronze_load (run_id=019f8ae7-2e24-7af5-a244-b8a6d6ad2810)
+2026-07-22 17:37:14.285 | INFO     | lakehouse.bronze.bronze_loader:main:99 - Loaded 5 validated events from manifest
+2026-07-22 17:37:14.564 | INFO     | lakehouse.bronze.bronze_loader:main:103 - Extracted raw text for 5/5 documents
+2026-07-22 17:38:04.070 | SUCCESS  | lakehouse.bronze.bronze_loader:main:115 - Bronze table written: 5 rows -> /content/ai-university-knowledge-hub/lakehouse/bronze/documents_bronze
+2026-07-22 17:38:06.921 | SUCCESS  | lineage.lineage_emitter:emit_lineage:63 - [LINEAGE] COMPLETE  bronze_load (run_id=019f8ae7-2e24-7af5-a244-b8a6d6ad2810)
+2026-07-22 17:38:07.182 | INFO     | lineage.lineage_emitter:emit_lineage:53 - [LINEAGE] START     silver_transform (run_id=019f8ae7-fcce-7a26-8574-3cffb4f58838)
+2026-07-22 17:38:15.970 | INFO     | lakehouse.silver.silver_transform:main:179 - Read 5 rows from Bronze
+2026-07-22 17:38:26.875 | SUCCESS  | lakehouse.silver.silver_transform:merge_into_silver:115 - [initial load] Silver table created via initial write: 5 rows
+2026-07-22 17:38:40.539 | SUCCESS  | lakehouse.silver.silver_transform:merge_into_silver:127 - [revision upsert] MERGE complete on business key file_name (update_existing=True) — 5 rows before, 5 rows after (1 incoming)
+2026-07-22 17:38:41.480 | INFO     | lakehouse.silver.silver_transform:main:230 - graduation_requirements.txt document_id=a2e1e0aa-fbfe-4d7d-bad9-bacde8806072 (originally 8ad606b9-9016-4a20-bc84-46b41a703644) — confirms UPDATE, not duplicate insert
+2026-07-22 17:38:41.778 | SUCCESS  | lakehouse.silver.silver_transform:demonstrate_schema_enforcement:162 - Schema enforcement CONFIRMED — Delta rejected the write with an undeclared column. Error: [_LEGACY_ERROR_TEMP_DELTA_0007] A schema mismatch detected when writing to the Delta table (Table ID: 8567a5da-1198-4db7-89fa-0810f0585ded).
+2026-07-22 17:38:41.779 | INFO     | lakehouse.silver.silver_transform:main:239 - Final Silver row count: 5 (must still be 5, not 6)
+2026-07-22 17:38:47.745 | SUCCESS  | lineage.lineage_emitter:emit_lineage:63 - [LINEAGE] COMPLETE  silver_transform (run_id=019f8ae7-fcce-7a26-8574-3cffb4f58838)
+2026-07-22 17:38:53.638 | INFO     | lineage.lineage_emitter:emit_lineage:53 - [LINEAGE] START     quality_checkpoint (run_id=019f8ae8-b246-708f-a1c3-07e86ad86c96)
+2026-07-22 17:38:54.340 | INFO     | quality.ge_checkpoint:main:92 - Great Expectations checkpoint against Silver (5 rows):
+2026-07-22 17:38:54.341 | SUCCESS  | quality.ge_checkpoint:main:96 -   [PASSED] expect_column_values_to_not_be_null (column=document_id)
+2026-07-22 17:38:54.342 | SUCCESS  | quality.ge_checkpoint:main:96 -   [PASSED] expect_column_values_to_not_be_null (column=file_name)
+2026-07-22 17:38:54.342 | SUCCESS  | quality.ge_checkpoint:main:96 -   [PASSED] expect_column_values_to_be_unique (column=file_name)
+2026-07-22 17:38:54.342 | SUCCESS  | quality.ge_checkpoint:main:96 -   [PASSED] expect_column_values_to_match_regex (column=file_type)
+2026-07-22 17:38:54.342 | SUCCESS  | quality.ge_checkpoint:main:96 -   [PASSED] expect_column_values_to_be_between (column=word_count)
+2026-07-22 17:38:54.342 | SUCCESS  | quality.ge_checkpoint:main:96 -   [PASSED] expect_column_values_to_be_in_set (column=is_valid)
+2026-07-22 17:38:54.343 | SUCCESS  | quality.ge_checkpoint:main:99 - Quality gate PASSED — safe to proceed to Gold
+2026-07-22 17:38:54.344 | SUCCESS  | lineage.lineage_emitter:emit_lineage:63 - [LINEAGE] COMPLETE  quality_checkpoint (run_id=019f8ae8-b246-708f-a1c3-07e86ad86c96)
+2026-07-22 17:38:54.492 | INFO     | lineage.lineage_emitter:emit_lineage:53 - [LINEAGE] START     gold_aggregate (run_id=019f8ae8-b59c-7273-9ad0-38c08233bf21)
+2026-07-22 17:39:01.891 | INFO     | lakehouse.gold.gold_aggregate:main:37 - Read 5 valid rows from Silver
+2026-07-22 17:39:14.650 | SUCCESS  | lakehouse.gold.gold_aggregate:main:63 - Gold table written + OPTIMIZEd: 3 category rows (aggregated from 5 Silver document rows) -> /content/ai-university-knowledge-hub/lakehouse/gold/category_knowledge_stats
+2026-07-22 17:39:14.650 | INFO     | lakehouse.gold.gold_aggregate:main:67 - Confirms Gold is a genuine aggregate, not a copy of Silver: 5 document rows -> 3 category rows, different schema (rollup columns vs per-document columns)
+2026-07-22 17:39:16.338 | SUCCESS  | lineage.lineage_emitter:emit_lineage:63 - [LINEAGE] COMPLETE  gold_aggregate (run_id=019f8ae8-b59c-7273-9ad0-38c08233bf21)
+
+Airflow's own log confirms: "Dag run in success state" / "DagRun Finished: ... state=success"
+(run_id=manual__2026-07-22T17:36:50.211798+00:00, executed via `airflow dags test university_knowledge_hub_pipeline 2026-01-01` in Google Colab)

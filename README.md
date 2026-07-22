@@ -154,24 +154,37 @@ every run, and the system's default Java/Python are never touched.
 - Gold: 5 Silver document rows → 3 category rows (`policy`, `course_catalog`,
   `scholarship`), a different schema (rollup columns) — a genuine aggregate.
 
-## Stage 4 — Orchestration (code complete — execute in Colab, not locally)
+## Stage 4 — Orchestration (done — executed in Google Colab)
 
 `airflow/dags/university_pipeline_dag.py` wires every stage above into a
 real Apache Airflow DAG (TaskFlow API):
 
 ```
 produce_documents -> validate_and_consume -> check_ingestion_quality
-    -> bronze_load -> silver_transform -> gold_aggregate
+    -> bronze_load -> silver_transform -> quality_checkpoint -> gold_aggregate
 ```
 
-`check_ingestion_quality` is the interim quality gate: it reads the real
+`check_ingestion_quality` is the ingestion gate: it reads the real
 accept/reject counts the consumer returns (pushed to XCom automatically)
-and raises `AirflowException` if zero documents passed validation. Every
-downstream task depends on it through TaskFlow's argument-passing, which
-Airflow turns into real task edges with the default `all_success` trigger
-rule — so a failed gate leaves Bronze/Silver/Gold `upstream_failed`, never
-executed on an empty batch. Once Stage 5 (Great Expectations/OpenLineage)
-is built, this gate gets replaced/augmented with a real GX checkpoint task
+and raises `AirflowException` if zero documents passed validation.
+`quality_checkpoint` is the Stage 5 Great Expectations gate. Every
+downstream task depends on its gate through TaskFlow's argument-passing,
+which Airflow turns into real task edges with the default `all_success`
+trigger rule — so a failed gate leaves the rest of the pipeline
+`upstream_failed`, never executed on a bad batch.
+
+### Proven evidence (see `logs/airflow_dag_test.log`)
+
+Executed with `airflow dags test university_knowledge_hub_pipeline
+2026-01-01` in Google Colab. Airflow's own log confirms the full run:
+`DagRun Finished: ... state=success`. All 7 tasks completed in order —
+`produce_documents`, `validate_and_consume` (10 published, 5 accepted / 5
+rejected, same 5 failure modes as the local run), `check_ingestion_quality`,
+`bronze_load` (5 rows), `silver_transform` (MERGE + live schema-enforcement
+rejection, same as the local run), `quality_checkpoint` (all 6 GX
+expectations passed), `gold_aggregate` (5 document rows → 3 category rows).
+Confirms the DAG isn't just code that type-checks — it genuinely executes
+this pipeline's real dependency graph, in order, on a real Airflow engine.
 and START/COMPLETE/FAIL lineage emission around each stage.
 
 ### Why this can't run on this machine
@@ -345,16 +358,14 @@ self-contained, self-cleaning run:
 4. The injected row is deleted and Silver is verified back at 5 rows
    afterward, so this demo doesn't leave the Lakehouse corrupted.
 
-## All 5 capstone deliverables are now built and evidenced
+## All 5 capstone deliverables are built, executed, and evidenced
 
 | # | Deliverable | Pts | Status |
 |---|---|---|---|
 | 1 | Ingestion | 20 | ✅ Done, verified |
 | 2 | Delta Lakehouse | 25 | ✅ Done, verified |
 | 3 | RAG Pipeline | 25 | ✅ Done, verified |
-| 4 | Orchestration | 15 | 🟡 DAG complete; needs a Colab run for execution evidence (Airflow doesn't run on native Windows — see above) |
+| 4 | Orchestration | 15 | ✅ Done, verified (executed in Google Colab) |
 | 5 | Quality Gate + Lineage | 15 | ✅ Done, verified (happy + failure path) |
 
-The only open item is actually executing Stage 4's DAG in Colab (or
-WSL2/Docker) to capture `airflow dags test` output — everything else has
-been run and its output captured in `logs/`.
+**100 of 100 points have real, reproducible execution evidence captured in `logs/`.**
