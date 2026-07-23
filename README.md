@@ -197,7 +197,78 @@ OpenLineage emits START / COMPLETE / FAIL events for every stage.
 
 # ▶️ Run
 
+Directe by:
 https://githubtocolab.com/LujainAldujain/University_Hub/blob/main/notebooks/capstone_demo.ipynb
+
+
+OR
+
+## How to Run
+
+Open a new Google Colab notebook and run the following cells **in order,
+within a single session** (Colab resets everything — Airflow, Kafka,
+installed packages — if the runtime restarts, so all steps must be re-run
+together after any disconnect).
+
+### 1. Clone the repo
+
+\`\`\`python
+!git clone https://github.com/LujainAldujain/University_Hub.git /content/ai-university-knowledge-hub
+%cd /content/ai-university-knowledge-hub
+\`\`\`
+
+### 2. Install Airflow and project dependencies
+
+\`\`\`python
+%%bash
+AIRFLOW_VERSION=3.3.0
+PYTHON_VERSION="$(python --version | cut -d " " -f 2 | cut -d "." -f 1-2)"
+CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+pip install "apache-airflow==${AIRFLOW_VERSION}" --constraint "${CONSTRAINT_URL}"
+pip install -r requirements.txt
+\`\`\`
+
+### 3. Start a local Kafka broker (KRaft mode, no ZooKeeper/Docker needed)
+
+\`\`\`python
+%%bash
+curl -sSOL https://downloads.apache.org/kafka/4.2.1/kafka_2.13-4.2.1.tgz
+tar -xzf kafka_2.13-4.2.1.tgz
+cd kafka_2.13-4.2.1
+CLUSTER_ID=$(bin/kafka-storage.sh random-uuid)
+bin/kafka-storage.sh format -t $CLUSTER_ID -c config/server.properties --standalone
+nohup bin/kafka-server-start.sh config/server.properties > /content/kafka.log 2>&1 &
+sleep 10
+for t in university.documents.raw university.documents.validated university.documents.dlq; do
+  bin/kafka-topics.sh --create --topic $t --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+done
+\`\`\`
+
+### 4. Point Airflow at this repo and initialize its metadata DB
+
+\`\`\`python
+%%bash
+cd /content/ai-university-knowledge-hub
+export AIRFLOW_HOME=/content/ai-university-knowledge-hub/airflow
+airflow db migrate
+\`\`\`
+
+### 5. Seed sample documents and run the DAG
+
+\`\`\`python
+%%bash
+cd /content/ai-university-knowledge-hub
+export AIRFLOW_HOME=/content/ai-university-knowledge-hub/airflow
+python scripts/seed_sample_documents.py
+airflow dags test university_knowledge_hub_pipeline 2026-01-01
+\`\`\`
+
+A successful run ends with:
+
+\`\`\`
+Dag run in success state
+DagRun Finished: dag_id=university_knowledge_hub_pipeline, ... state=success
+\`\`\`
 
 # ✅ Capstone Deliverables
 
